@@ -26,7 +26,7 @@ function padding() {
         console.log(match);
 
         const py = match[1];
-        const px = match[2] || py; // Usa el mismo valor para px si no se especifica
+        const px = match[2] || py;
         elemento.style.padding = `${py} ${px}`;
       }
     });
