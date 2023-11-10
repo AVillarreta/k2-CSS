@@ -163,6 +163,19 @@ function borderSides() {
     });
   });
 }
+function bg() {
+  const elementos = document.querySelectorAll('[class*="k2-bg-"]');
+  elementos.forEach((elemento) => {
+    const clases = elemento.classList;
+    clases.forEach((clase) => {
+      const match = clase.match(/k2-bg-\[\s*([^\]]*)\s*\]/);
+      if (match) {
+        const background = match[1];
+        elemento.style.background = background;
+      }
+    });
+  });
+}
 
 const executador = (event) => {
   const exist_element = document.querySelectorAll('[class*="k2-"]');
@@ -177,6 +190,7 @@ const executador = (event) => {
     fontFamily(event);
     border(event);
     borderSides(event);
+    bg(event);
   } else {
     return;
   }
