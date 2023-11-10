@@ -12,11 +12,100 @@ function pt() {
     });
   });
 }
+
+function padding() {
+  const elementos = document.querySelectorAll('[class*="k2-p-"]');
+
+  elementos.forEach((elemento) => {
+    const clases = elemento.classList;
+    clases.forEach((clase) => {
+      const match = clase.match(
+        /k2-p-\[\s*([\d.]+[a-zA-Z%]*)\s*(?:,\s*([\d.]+[a-zA-Z%]*))?\s*\]/
+      );
+      if (match) {
+        console.log(match);
+
+        const py = match[1];
+        const px = match[2] || py; // Usa el mismo valor para px si no se especifica
+        elemento.style.padding = `${py} ${px}`;
+      }
+    });
+  });
+}
+
+function margin() {
+  const elementos = document.querySelectorAll('[class*="k2-m"]');
+
+  elementos.forEach((elemento) => {
+    const clases = elemento.classList;
+    clases.forEach((clase) => {
+      const doble = clase.match(
+        /k2-m-\[\s*([\d.]+[a-zA-Z%]*)(?:\s*,\s*([\d.]+[a-zA-Z%]*)(?:\s*,\s*[\d.]+[a-zA-Z%]*)*)?\s*\]/
+      );
+      const match = clase.match(/k2-m-\[\s*([^\]]*)\s*\]/);
+      const mb = clase.match(/k2-mb-\[\s*([^\]]*)\s*\]/);
+      const mt = clase.match(/k2-mt-\[\s*([^\]]*)\s*\]/);
+      const ml = clase.match(/k2-ml-\[\s*([^\]]*)\s*\]/);
+      const mr = clase.match(/k2-mr-\[\s*([^\]]*)\s*\]/);
+      const mx = clase.match(/k2-mx-\[\s*([^\]]*)\s*\]/);
+      const my = clase.match(/k2-my-\[\s*([^\]]*)\s*\]/);
+
+      if (mb) {
+        const py = mb[1];
+        elemento.style.marginBottom = py;
+        return;
+      }
+      if (mt) {
+        const py = mt[1];
+        elemento.style.marginTop = py;
+        return;
+      }
+      if (ml) {
+        const px = ml[1];
+        elemento.style.marginLeft = px;
+        return;
+      }
+      if (mr) {
+        const px = mr[1];
+        elemento.style.marginRight = px;
+        return;
+      }
+      if (mx) {
+        const px = mx[1];
+        elemento.style.marginLeft = px;
+        elemento.style.marginRight = px;
+        return;
+      }
+      if (my) {
+        const py = my[1];
+        elemento.style.marginTop = py;
+        elemento.style.marginBottom = py;
+        return;
+      }
+      if (doble) {
+        console.log(doble);
+
+        const py = doble[1];
+        let px = doble[2];
+        if (!px) {
+          px = py;
+        }
+        elemento.style.margin = `${py} ${px}`;
+        return;
+      }
+      if (match) {
+        console.log(match);
+        const marginSize = match[1];
+        elemento.style.margin = marginSize;
+      }
+    });
+  });
+}
+
 function pb() {
   const elementos = document.querySelectorAll('[class*="k2-pb-"]');
 
   elementos.forEach((elemento) => {
-    console.log(1);
     const clases = elemento.classList;
     clases.forEach((clase) => {
       const match = clase.match(/k2-pb-\[\s*([^\]]*)\s*\]/);
@@ -122,7 +211,6 @@ function border() {
       if (match) {
         const pixels = match[0].split("b")[1].split("-")[0];
         const color = match[1];
-        console.log(pixels, color);
         elemento.style.border = `${pixels}px solid ${color}`;
       }
     });
@@ -177,6 +265,29 @@ function bg() {
   });
 }
 
+function transition() {
+  const elementos = document.querySelectorAll('[class*="k2-transition-"]');
+
+  elementos.forEach((elemento) => {
+    const clases = elemento.classList;
+    clases.forEach((clase) => {
+      const doble = clase.match(
+        /k2-transition-\[\s*([\d.]+[a-zA-Z%]*)(?:\s*,\s*([\d.]+[a-zA-Z%]*)(?:\s*,\s*[\d.]+[a-zA-Z%]*)*)?\s*\]/
+      );
+      /* const match = clase.match(/k2-transition-\[\s*([^\]]*)\s*\]/); */
+      if (doble) {
+        const py = doble[1];
+        let px = doble[2];
+        if (!doble[2]) {
+          px = "ease";
+        }
+        elemento.style.transition = `all ${py} ${px}`;
+        return;
+      }
+    });
+  });
+}
+
 const executador = (event) => {
   const exist_element = document.querySelectorAll('[class*="k2-"]');
   if (exist_element) {
@@ -191,6 +302,9 @@ const executador = (event) => {
     border(event);
     borderSides(event);
     bg(event);
+    padding(event);
+    margin(event);
+    transition(event);
   } else {
     return;
   }

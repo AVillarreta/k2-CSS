@@ -1,6 +1,6 @@
 {
   "name": "k2css",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "\"K2 CSS is a small CSS library designed to make your design more user-friendly.\"",
   "main": "main.js",
   "scripts": {
