@@ -29,7 +29,6 @@ function pb() {
 }
 function pl() {
   const elementos = document.querySelectorAll('[class*="k2-pt-"]');
-
   elementos.forEach((elemento) => {
     const clases = elemento.classList;
     clases.forEach((clase) => {
