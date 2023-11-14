@@ -23,8 +23,6 @@ function padding() {
         /k2-p-\[\s*([\d.]+[a-zA-Z%]*)\s*(?:,\s*([\d.]+[a-zA-Z%]*))?\s*\]/
       );
       if (match) {
-        console.log(match);
-
         const py = match[1];
         const px = match[2] || py;
         elemento.style.padding = `${py} ${px}`;
@@ -83,8 +81,6 @@ function margin() {
         return;
       }
       if (doble) {
-        console.log(doble);
-
         const py = doble[1];
         let px = doble[2];
         if (!px) {
@@ -94,7 +90,6 @@ function margin() {
         return;
       }
       if (match) {
-        console.log(match);
         const marginSize = match[1];
         elemento.style.margin = marginSize;
       }
@@ -203,15 +198,15 @@ function fontFamily() {
 }
 
 function border() {
-  const elementos = document.querySelectorAll('[class*="k2-b"]');
+  const elementos = document.querySelectorAll('[class*="k2-b-"]');
   elementos.forEach((elemento) => {
     const clases = elemento.classList;
     clases.forEach((clase) => {
-      const match = clase.match(/k2-b\d*-\[\s*([a-zA-Z0-9#]+|[a-zA-Z]+)\s*\]/);
+      const match = clase.match(/k2-b-\[([^\]]+),\s*([^\]]+)\]/);
       if (match) {
-        const pixels = match[0].split("b")[1].split("-")[0];
-        const color = match[1];
-        elemento.style.border = `${pixels}px solid ${color}`;
+        const pixels = match[1];
+        const color = match[2];
+        elemento.style.border = `${pixels} solid ${color}`;
       }
     });
   });
@@ -221,29 +216,24 @@ function borderSides() {
   elementos.forEach((elemento) => {
     const clases = elemento.classList;
     clases.forEach((clase) => {
-      const match = clase.match(
-        /k2-(b[lr]?[tb]?)(\d+)-\[\s*([a-zA-Z0-9#]+|[a-zA-Z]+)\s*\]/
-      );
+      const match = clase.match(/k2-b[a-z]*-\[([^\]]+),\s*([^\]]+)\]/);
       if (match) {
-        const direccion = match[1]; // 'b', 'bl', 'br', 'bt' o 'bb'
-        const pixels = match[2];
-        const color = match[3];
+        const direccion = match[0][4]; // 'b', 'bl', 'br', 'bt' o 'bb'
+        const pixels = match[1];
+        const color = match[2];
 
         switch (direccion) {
+          case "l":
+            elemento.style.borderLeft = `${pixels} solid ${color}`;
+            break;
+          case "r":
+            elemento.style.borderRight = `${pixels} solid ${color}`;
+            break;
+          case "t":
+            elemento.style.borderTop = `${pixels} solid ${color}`;
+            break;
           case "b":
-            elemento.style.borderBottom = `${pixels}px solid ${color}`;
-            break;
-          case "bl":
-            elemento.style.borderLeft = `${pixels}px solid ${color}`;
-            break;
-          case "br":
-            elemento.style.borderRight = `${pixels}px solid ${color}`;
-            break;
-          case "bt":
-            elemento.style.borderTop = `${pixels}px solid ${color}`;
-            break;
-          case "bb":
-            elemento.style.borderBottom = `${pixels}px solid ${color}`;
+            elemento.style.borderBottom = `${pixels} solid ${color}`;
             break;
           // Puedes agregar más casos según sea necesario
         }
@@ -288,7 +278,7 @@ function transition() {
   });
 }
 
-const executador = (event) => {
+const executer = (event) => {
   const exist_element = document.querySelectorAll('[class*="k2-"]');
   if (exist_element) {
     pt(event);
@@ -310,4 +300,4 @@ const executador = (event) => {
   }
 };
 
-document.addEventListener("DOMContentLoaded", executador);
+document.addEventListener("DOMContentLoaded", executer);
